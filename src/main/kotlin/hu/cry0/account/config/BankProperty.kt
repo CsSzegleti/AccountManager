@@ -5,4 +5,4 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 
 @ConfigurationProperties(prefix = "bank")
 @ConfigurationPropertiesScan
-class BankProperty(val accountNumberPrefix: Long)
+class BankProperty(val accountNumberPrefix: Long?)

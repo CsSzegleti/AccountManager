@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
-interface AccountRepository : JpaRepository<AccountEntity, Long> {
+interface AccountRepository : JpaRepository<AccountEntity, String> {
     @Query(
         """
         SELECT
@@ -14,5 +14,5 @@ interface AccountRepository : JpaRepository<AccountEntity, Long> {
             (SELECT COALESCE(SUM(t.amount), 0) FROM transsaction t WHERE t.type='WITHDRAWAL' AND t.account_number=:accountNumber AND t.time_stamp <= CURRENT_TIMESTAMP))
         """, nativeQuery = true
     )
-    fun getAccountBalance(@Param("accountNumber") accountNumber: Long): Long
+    fun getAccountBalance(@Param("accountNumber") accountNumber: String): Long
 }

@@ -15,14 +15,14 @@ import org.hibernate.annotations.SQLRestriction
 @Entity
 @Table(name = "account")
 @SQLDelete(sql = "update account SET status = 'DELETED' WHERE id = ? AND status <> 'DELETED'", check = ResultCheckStyle.COUNT)
-@SQLRestriction("status <> 'DELETED")
+@SQLRestriction("status <> 'DELETED'")
 class AccountEntity {
 
     @Id
     @GenericGenerator(name = "account_number", strategy = "hu.cry0.account.persistence.AccountNumberGenerator")
     @GeneratedValue(generator = "account_number")
-    @Column(name = "accunt_number", unique = true)
-    var accountNumber: Long? = null
+    @Column(name = "account_number", unique = true)
+    var accountNumber: String? = null
 
     @Column(name = "account_holder_name")
     var accountHolderName: String? = null

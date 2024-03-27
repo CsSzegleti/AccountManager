@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
 data class Account(
-    var accountNumber: Long? = null,
+    var accountNumber: String? = null,
 
     @NotNull
     @NotBlank

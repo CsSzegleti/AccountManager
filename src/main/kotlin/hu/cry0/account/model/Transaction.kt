@@ -7,7 +7,7 @@ import java.util.*
 data class Transaction(
     var id: UUID? = null,
 
-    var accountNumber: Long? = null,
+    var accountNumber: String? = null,
 
     var type: TransactionType? = null,
 

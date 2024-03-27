@@ -5,7 +5,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 
-class SecurityCheckClient(baseUrl: String) {
+open class SecurityCheckClient(baseUrl: String) {
 
     companion object {
         private const val BACKGROUND_SECURITY_CHECK_URL = "/background-security-check"

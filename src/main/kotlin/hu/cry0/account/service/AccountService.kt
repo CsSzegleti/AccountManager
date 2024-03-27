@@ -24,13 +24,13 @@ class AccountService(
         return results.map { modelMapper.map(it, Account::class.java) }
     }
 
-    fun getAccountByNumber(accountNumber: Long): Account {
+    fun getAccountByNumber(accountNumber: String): Account {
         val result = accountRepository.getReferenceById(accountNumber)
 
         return modelMapper.map(result, Account::class.java)
     }
 
-    fun deleteAccountByNumber(accountNumber: Long) = accountRepository.deleteById(accountNumber)
+    fun deleteAccountByNumber(accountNumber: String) = accountRepository.deleteById(accountNumber)
 
     fun initiateAccountRegistration(accountHolderName: String): Account {
         val accountToSave = Account().apply {
@@ -50,7 +50,7 @@ class AccountService(
     }
 
     fun finalizeAccountRegistration(securityCheckOutputDto: SecurityCheckOutputDto) {
-        val existingAccount = modelMapper.map(accountRepository.getReferenceById(securityCheckOutputDto.accountNumber.toLong()), Account::class.java)
+        val existingAccount = getAccountByNumber(securityCheckOutputDto.accountNumber)
 
         if (securityCheckOutputDto.isSecurityCheckSuccess) {
             existingAccount.status = AccountStatus.ACTIVE
@@ -61,5 +61,5 @@ class AccountService(
         accountRepository.save(modelMapper.map(existingAccount, AccountEntity::class.java))
     }
 
-    fun getBalance(accountNumber: Long) = accountRepository.getAccountBalance(accountNumber)
+    fun getBalance(accountNumber: String) = accountRepository.getAccountBalance(accountNumber)
 }

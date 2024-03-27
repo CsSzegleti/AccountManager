@@ -85,7 +85,7 @@ class AccountController(private val accountService: AccountService) {
         )]
     )
     @GetMapping(path = ["/{accountNumber}"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getByAccountNumber(@PathVariable accountNumber: Long): ResponseEntity<Account> =
+    fun getByAccountNumber(@PathVariable accountNumber: String): ResponseEntity<Account> =
         ResponseEntity.ok(accountService.getAccountByNumber(accountNumber))
 
 
@@ -118,7 +118,7 @@ class AccountController(private val accountService: AccountService) {
     )
     @GetMapping(path = ["/{accountNumber}/balance"])
     @Validated
-    fun getAccountBalance(@AccountActive @PathVariable accountNumber: Long) =
+    fun getAccountBalance(@AccountActive @PathVariable accountNumber: String) =
         ResponseEntity.ok(BalanceResponse(accountService.getBalance(accountNumber)))
 
 
@@ -148,7 +148,7 @@ class AccountController(private val accountService: AccountService) {
     )
     @DeleteMapping(path = ["/{accountNumber}"])
     @Validated
-    fun deleteAccount(@AccountActive @PathVariable accountNumber: Long): ResponseEntity<*> {
+    fun deleteAccount(@AccountActive @PathVariable accountNumber: String): ResponseEntity<*> {
         accountService.deleteAccountByNumber(accountNumber)
         return ResponseEntity.status(204).build<HttpStatus>()
     }

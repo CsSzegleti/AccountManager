@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
 interface TransactionRepository : JpaRepository<TransactionEntity, UUID> {
-    fun findAllByAccountNumber(accountNumber: Long): List<TransactionEntity>
+    fun findAllByAccountNumber(accountNumber: String): List<TransactionEntity>
 
-    fun findByIdAndAccountNumber(id: UUID, accountNumber: Long): TransactionEntity
+    fun findByIdAndAccountNumber(id: UUID, accountNumber: String): TransactionEntity
 }

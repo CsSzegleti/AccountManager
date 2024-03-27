@@ -7,9 +7,9 @@ import jakarta.validation.ConstraintValidatorContext
 
 class ActiveAccountValidator(
     private val accountService: AccountService
-) : ConstraintValidator<AccountActive, Long> {
+) : ConstraintValidator<AccountActive, String> {
 
-    override fun isValid(accountNumber: Long?, validationContext: ConstraintValidatorContext?): Boolean {
+    override fun isValid(accountNumber: String?, validationContext: ConstraintValidatorContext?): Boolean {
         return accountNumber?.let {
             accountService.getAccountByNumber(accountNumber).status == AccountStatus.ACTIVE
         } ?: false

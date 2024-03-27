@@ -55,7 +55,7 @@ class TransactionController(private val transactionService: TransactionService) 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     @Validated
     fun getAllByAccountNumber(
-        @PathVariable @AccountActive accountNumber: Long
+        @PathVariable @AccountActive accountNumber: String
     ) = ResponseEntity.ok(transactionService.getAllByAccountNumber(accountNumber))
 
     @Operation(
@@ -88,7 +88,7 @@ class TransactionController(private val transactionService: TransactionService) 
     @GetMapping(path = ["/{transactionId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Validated
     fun getById(
-        @PathVariable @AccountActive accountNumber: Long,
+        @PathVariable @AccountActive accountNumber: String,
         @PathVariable transactionId: UUID,
     ) = ResponseEntity.ok(transactionService.getById(transactionId, accountNumber))
 
@@ -202,7 +202,7 @@ class TransactionController(private val transactionService: TransactionService) 
     )
     @Validated
     fun updateTransaction(
-        @PathVariable @AccountActive accountNumber: Long,
+        @PathVariable @AccountActive accountNumber: String,
         @PathVariable transactionId: UUID,
         @RequestBody transaction: Transaction,
     ): ResponseEntity<Transaction> {

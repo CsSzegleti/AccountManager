@@ -14,7 +14,7 @@ class TransactionEntity {
     var id: UUID? = null
 
     @Column(name = "account_number", updatable = false, insertable = false)
-    var accountNumber: Long? = null
+    var accountNumber: String? = null
 
     @ManyToOne
     @JoinColumn(name = "account_number")

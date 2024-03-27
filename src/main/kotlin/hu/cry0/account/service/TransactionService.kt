@@ -12,13 +12,13 @@ class TransactionService(
     private val transactionRepository: TransactionRepository,
     private val modelMapper: ModelMapper,
 ) {
-    fun getAllByAccountNumber(accountNumber: Long): List<Transaction> {
+    fun getAllByAccountNumber(accountNumber: String): List<Transaction> {
         val result = transactionRepository.findAllByAccountNumber(accountNumber)
 
         return result.mapNotNull { modelMapper.map(it, Transaction::class.java) }
     }
 
-    fun getById(transactionId: UUID, accountNumber: Long): Transaction =
+    fun getById(transactionId: UUID, accountNumber: String): Transaction =
         modelMapper.map(transactionRepository.findByIdAndAccountNumber(transactionId, accountNumber), Transaction::class.java)
 
     fun deleteById(transactionId: UUID) = transactionRepository.deleteById(transactionId)
@@ -34,7 +34,7 @@ class TransactionService(
         return modelMapper.map(saveResult, Transaction::class.java)
     }
 
-    fun updateTransaction(transactionId: UUID, accountNumber: Long,  transaction: Transaction): Transaction {
+    fun updateTransaction(transactionId: UUID, accountNumber: String,  transaction: Transaction): Transaction {
         val existingTransaction = getById(transactionId, accountNumber)
         existingTransaction.merge(transaction)
 

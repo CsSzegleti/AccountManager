@@ -13,7 +13,7 @@ class ApplicationContextProvider : ApplicationContextAware {
         private var appContext: ApplicationContext? = null
 
         val bankProperty: BankProperty?
-            get() = appContext?.getBean(BankProperty::class.java )
+            get() = appContext?.getBean(BankProperty::class.java)
 
         fun getApplicationContext() = appContext
 

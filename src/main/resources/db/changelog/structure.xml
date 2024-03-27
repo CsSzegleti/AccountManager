@@ -11,7 +11,7 @@
 
     <changeSet id="createAccountAndTransactionTables" author="csongor_szegleti">
         <createTable tableName="account">
-            <column name="accunt_number" type="bigint">
+            <column name="account_number" type="varchar(24)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ACCOUNT_NUMBER"/>
             </column>
             <column name="account_holder_name" type="varchar(255)">
@@ -25,7 +25,7 @@
             <column name="id" type="uuid">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TRANSACTION"/>
             </column>
-            <column name="account_number" type="bigint">
+            <column name="account_number" type="varchar(24)">
                 <constraints nullable="false"/>
             </column>
             <column name="time_stamp" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP">
@@ -39,10 +39,9 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="accunt_number"
+        <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="account_number"
                                  constraintName="FK_TRANSACTION_ACCOUNT"
                                  referencedTableName="account"
-                                 referencedColumnNames="accunt_number"/>
-
+                                 referencedColumnNames="account_number"/>
     </changeSet>
 </databaseChangeLog>
