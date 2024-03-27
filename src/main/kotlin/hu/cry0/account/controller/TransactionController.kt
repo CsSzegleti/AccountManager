@@ -1,8 +1,9 @@
 package hu.cry0.account.controller
 
 import hu.cry0.account.model.Transaction
+import hu.cry0.account.model.validator.AccountActive
 import hu.cry0.account.service.TransactionService
-import jakarta.validation.constraints.NotNull
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -24,18 +25,18 @@ class TransactionController(private val transactionService: TransactionService) 
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getAllByAccountNumber(
-        @PathVariable(required = true) @NotNull accountNumber: Long?
+        @PathVariable @Valid @AccountActive accountNumber: Long?
     ) = ResponseEntity.ok(transactionService.getAllByAccountNumber(accountNumber!!))
 
     @GetMapping(path = ["/{transactionId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getById(
-        @PathVariable @NotNull accountNumber: Long,
+        @PathVariable @Valid @AccountActive accountNumber: Long,
         @PathVariable transactionId: UUID,
     ) = ResponseEntity.ok(transactionService.getById(transactionId, accountNumber))
 
     @DeleteMapping(path = ["/{transactionId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun deleteById(
-        @PathVariable @NotNull accountNumber: Long,
+        @PathVariable @Valid @AccountActive accountNumber: Long,
         @PathVariable transactionId: UUID,
     ): ResponseEntity<*> {
         transactionService.deleteById(transactionId)
@@ -44,7 +45,7 @@ class TransactionController(private val transactionService: TransactionService) 
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun addTransaction(
-        @PathVariable @NotNull accountNumber: Long,
+        @PathVariable @Valid @AccountActive accountNumber: Long,
         @RequestBody transaction: Transaction,
     ): ResponseEntity<Transaction> {
         val saveResult = transactionService.addTransaction(transaction)
@@ -62,7 +63,7 @@ class TransactionController(private val transactionService: TransactionService) 
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun updateTransaction(
-        @PathVariable @NotNull accountNumber: Long,
+        @PathVariable @Valid @AccountActive accountNumber: Long,
         @PathVariable transactionId: UUID,
         @RequestBody transaction: Transaction,
     ): ResponseEntity<Transaction> {

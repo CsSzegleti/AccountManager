@@ -4,10 +4,13 @@ import hu.cry0.account.client.security.model.SecurityCheckOutputDto
 import hu.cry0.account.model.Account
 import hu.cry0.account.model.AccountInitRequest
 import hu.cry0.account.model.BalanceResponse
+import hu.cry0.account.model.validator.AccountActive
 import hu.cry0.account.service.AccountService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -30,11 +33,11 @@ class AccountController(private val accountService: AccountService) {
         ResponseEntity.ok(accountService.getAccountByNumber(accountNumber))
 
     @GetMapping(path = ["/{accountNumber}/balance"])
-    fun getAccountBalance(@PathVariable accountNumber: Long) = ResponseEntity.ok(BalanceResponse(accountService.getBalance(accountNumber)))
+    fun getAccountBalance(@Valid @AccountActive @PathVariable accountNumber: Long) = ResponseEntity.ok(BalanceResponse(accountService.getBalance(accountNumber)))
 
 
     @DeleteMapping(path = ["/{accountNumber}"])
-    fun deleteAccount(@PathVariable accountNumber: Long): ResponseEntity<*> {
+    fun deleteAccount(@Valid @AccountActive @PathVariable accountNumber: Long): ResponseEntity<*> {
         accountService.deleteAccountByNumber(accountNumber)
         return ResponseEntity<HttpStatus>(HttpStatus.OK)
     }
