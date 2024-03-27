@@ -13,8 +13,14 @@ data class Transaction(
 
     var amount: Long? = null,
 
-    val timeStamp: Instant? = null,
+    var timeStamp: Instant? = null,
 
     @JsonBackReference
     var account: Account? = null,
-)
+) {
+    fun merge(other: Transaction) {
+        accountNumber = other.accountNumber
+        type = other.type
+        amount = other.amount
+    }
+}
