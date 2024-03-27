@@ -3,9 +3,11 @@ package hu.cry0.account.persistence.entity
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.ResultCheckStyle
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.SQLRestriction
@@ -14,9 +16,11 @@ import org.hibernate.annotations.SQLRestriction
 @Table(name = "account")
 @SQLDelete(sql = "update account SET status = 'DELETED' WHERE id = ? AND status <> 'DELETED'", check = ResultCheckStyle.COUNT)
 @SQLRestriction("status <> 'DELETED")
-class Account {
+class AccountEntity {
 
     @Id
+    @GenericGenerator(name = "account_number", strategy = "hu.cry0.account.persistence.AccountNumberGenerator")
+    @GeneratedValue(generator = "account_number")
     @Column(name = "accunt_number", unique = true)
     var accountNumber: Long? = null
 
@@ -27,5 +31,9 @@ class Account {
     var balance: Long = 0
 
     @OneToMany(mappedBy = "account", cascade = [CascadeType.DETACH])
-    var transactions: List<Transaction> = listOf()
+    var transactions: List<TransactionEntity> = listOf()
+
+    @Column(name = "status")
+    var status: String? = null
+
 }

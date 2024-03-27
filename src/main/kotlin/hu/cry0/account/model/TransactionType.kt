@@ -1,4 +1,4 @@
-package hu.cry0.account.persistence.entity
+package hu.cry0.account.model
 
 enum class TransactionType {
     DEPOSIT,

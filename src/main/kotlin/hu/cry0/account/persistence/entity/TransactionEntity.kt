@@ -6,7 +6,7 @@ import java.util.UUID
 
 @Entity
 @Table(name = "transaction")
-class Transaction {
+class TransactionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -18,14 +18,14 @@ class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "account_number")
-    var account: Account? = null
+    var account: AccountEntity? = null
 
     @Column(name = "transaction_type")
-    var type: TransactionType? = null
+    var type: String? = null
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     var amount: Long? = null
 
-    @Column(name = "time_stamp")
+    @Column(name = "time_stamp", updatable = false)
     val timeStamp: Instant? = null
 }
