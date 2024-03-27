@@ -45,7 +45,7 @@ class AccountService(
                 accountNumber = savedAccountEntity.accountNumber.toString(),
                 callbackUrl = callbackProperty.url
             )
-        )
+        ).subscribe()
         return modelMapper.map(savedAccountEntity, Account::class.java)
     }
 
