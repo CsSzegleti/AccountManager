@@ -3,6 +3,7 @@ package hu.cry0.account.controller
 import hu.cry0.account.client.security.model.SecurityCheckOutputDto
 import hu.cry0.account.model.Account
 import hu.cry0.account.model.AccountInitRequest
+import hu.cry0.account.model.BalanceResponse
 import hu.cry0.account.service.AccountService
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -27,6 +28,10 @@ class AccountController(private val accountService: AccountService) {
     @GetMapping(path = ["/{accountNumber}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getByAccountNumber(@PathVariable accountNumber: Long): ResponseEntity<Account> =
         ResponseEntity.ok(accountService.getAccountByNumber(accountNumber))
+
+    @GetMapping(path = ["/{accountNumber}/balance"])
+    fun getAccountBalance(@PathVariable accountNumber: Long) = ResponseEntity.ok(BalanceResponse(accountService.getBalance(accountNumber)))
+
 
     @DeleteMapping(path = ["/{accountNumber}"])
     fun deleteAccount(@PathVariable accountNumber: Long): ResponseEntity<*> {

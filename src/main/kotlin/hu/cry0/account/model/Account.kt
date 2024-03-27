@@ -12,11 +12,8 @@ data class Account(
     @NotBlank
     var accountHolderName: String? = null,
 
-    var balance: Long = 0,
-
     @JsonManagedReference
     var transactions: List<Transaction> = listOf(),
 
-    @JsonIgnore
     var status: AccountStatus = AccountStatus.PENDING
 )

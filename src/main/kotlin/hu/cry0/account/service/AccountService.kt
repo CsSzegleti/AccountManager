@@ -62,4 +62,5 @@ class AccountService(
         accountRepository.save(modelMapper.map(existingAccount, AccountEntity::class.java))
     }
 
+    fun getBalance(accountNumber: Long) = accountRepository.getAccountBalance(accountNumber)
 }
