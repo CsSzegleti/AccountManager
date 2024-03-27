@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   postgres:
     image: 'postgres:latest'
@@ -20,9 +22,10 @@ services:
       timeout: 5s
       retries: 5
       start_period: 5s
-
     ports:
       - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
 
   background-security-check:
     build:
@@ -31,3 +34,9 @@ services:
       - SPRING_PROFILES_ACTIVE=test
     ports:
       - '9095:9095'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  db:
+    external: false
