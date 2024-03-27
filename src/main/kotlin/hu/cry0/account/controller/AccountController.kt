@@ -128,7 +128,7 @@ class AccountController(private val accountService: AccountService) {
     )
     @ApiResponses(
         value = [ApiResponse(
-            description = "Successful operation", responseCode = "200"
+            description = "Successful operation", responseCode = "204"
         ), ApiResponse(
             description = "Bad request", responseCode = "400", content = [Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
@@ -150,7 +150,7 @@ class AccountController(private val accountService: AccountService) {
     @Validated
     fun deleteAccount(@AccountActive @PathVariable accountNumber: Long): ResponseEntity<*> {
         accountService.deleteAccountByNumber(accountNumber)
-        return ResponseEntity<HttpStatus>(HttpStatus.OK)
+        return ResponseEntity.status(204).build<HttpStatus>()
     }
 
     @Operation(
