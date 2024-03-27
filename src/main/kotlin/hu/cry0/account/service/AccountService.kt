@@ -3,7 +3,6 @@ package hu.cry0.account.service
 import hu.cry0.account.client.security.SecurityCheckClient
 import hu.cry0.account.client.security.model.SecurityCheckInputDto
 import hu.cry0.account.client.security.model.SecurityCheckOutputDto
-import hu.cry0.account.config.BankProperty
 import hu.cry0.account.config.CallbackProperty
 import hu.cry0.account.model.Account
 import hu.cry0.account.model.AccountStatus
