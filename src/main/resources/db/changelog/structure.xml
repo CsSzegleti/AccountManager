@@ -45,28 +45,4 @@
                                  referencedColumnNames="accunt_number"/>
 
     </changeSet>
-
-    <changeSet id="create" author="csongor_szegleti">
-        <sql dbms="postgresql" endDelimiter="">
-            CREATE TRIGGER update_balance_after_transaction_insert
-                AFTER INSERT
-                ON transaction
-                FOR EACH ROW
-            BEGIN
-                DECLARE trans_type VARCHAR(255);
-            DECLARE trans_amount BIGINT;
-            DECLARE account_number LONG;
-
-            SET account_number = NEW.account_number;
-            SET trans_type = NEW.transaction_type;
-            SET trans_amount = NEW.amount;
-
-            IF trans_type = 'DEPOSIT' THEN
-                UPDATE account SET balance = balance + trans_amount WHERE accunt_number = account_number;
-                ELSEIF trans_type = 'WITHDRAWAL' THEN
-                UPDATE account SET balance = balance - trans_amount WHERE accunt_number = account_number;
-            END IF;
-            END;
-        </sql>
-    </changeSet>
 </databaseChangeLog>
