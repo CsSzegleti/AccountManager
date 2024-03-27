@@ -18,7 +18,6 @@ class AccountService(
     private val securityCheckClient: SecurityCheckClient,
     private val callbackProperty: CallbackProperty,
     private val modelMapper: ModelMapper,
-    private val bankProperty: BankProperty,
 ) {
     fun getAll(): List<Account> {
         val results = accountRepository.findAll()
