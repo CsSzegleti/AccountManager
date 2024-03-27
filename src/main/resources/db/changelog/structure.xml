@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+
+    <changeSet id="createAccountAndTransactionTables" author="csongor_szegleti">
+        <createTable tableName="account">
+            <column name="accunt_number" type="long">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ACCOUNT_NUMBER"/>
+            </column>
+            <column name="account_holder_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(7)" defaultValue="ACTIVE"/>
+            <column name="balance" type="bigint" defaultValue="0"/>
+        </createTable>
+
+        <createTable tableName="transaction">
+            <column name="id" type="uuid">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TRANSACTION"/>
+            </column>
+            <column name="account_number" type="long">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_stamp" type="datetime" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="accunt_number"
+                                 constraintName="FK_TRANSACTION_ACCOUNT"
+                                 referencedTableName="account"
+                                 referencedColumnNames="accunt_number"/>
+
+    </changeSet>
+</databaseChangeLog>

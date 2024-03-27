@@ -23,8 +23,9 @@ class Account {
     @Column(name = "account_holder_name")
     var accountHolderName: String? = null
 
+    @Column(name = "balance")
+    var balance: Long = 0
+
     @OneToMany(mappedBy = "account", cascade = [CascadeType.DETACH])
     var transactions: List<Transaction> = listOf()
-
-    var status: String? = null
 }
