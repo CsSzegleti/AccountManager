@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ScopedProxyMode
 import org.springframework.web.context.WebApplicationContext
 
 @Configuration
-class ClientConfig(private val apiProperties: ApiProperties) {
+class ClientConfig(private val apiProperties: ApiProperty) {
 
     @Bean
     @Scope(WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)

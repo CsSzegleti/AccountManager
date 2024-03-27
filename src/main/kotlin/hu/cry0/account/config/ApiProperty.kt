@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 
 @ConfigurationProperties(prefix = "api")
 @ConfigurationPropertiesScan
-class ApiProperties(
+class ApiProperty(
     val securityCheck: PathProperty,
 ) {
     class PathProperty(val basePath: String)
