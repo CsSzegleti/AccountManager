@@ -31,7 +31,7 @@ class TransactionController(private val transactionService: TransactionService) 
     fun getById(
         @PathVariable @NotNull accountNumber: Long,
         @PathVariable transactionId: UUID,
-    ) = ResponseEntity.ok(transactionService.getById(transactionId))
+    ) = ResponseEntity.ok(transactionService.getById(transactionId, accountNumber))
 
     @DeleteMapping(path = ["/{transactionId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun deleteById(
@@ -66,7 +66,7 @@ class TransactionController(private val transactionService: TransactionService) 
         @PathVariable transactionId: UUID,
         @RequestBody transaction: Transaction,
     ): ResponseEntity<Transaction> {
-        val updateResult = transactionService.updateTransaction(transactionId, transaction)
+        val updateResult = transactionService.updateTransaction(transactionId, accountNumber, transaction)
 
         return ResponseEntity.ok(updateResult)
     }

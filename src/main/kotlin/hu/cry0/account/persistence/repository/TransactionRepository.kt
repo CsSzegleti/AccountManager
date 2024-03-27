@@ -6,4 +6,6 @@ import java.util.UUID
 
 interface TransactionRepository : JpaRepository<TransactionEntity, UUID> {
     fun findAllByAccountNumber(accountNumber: Long): List<TransactionEntity>
+
+    fun findByIdAndAccountNumber(id: UUID, accountNumber: Long): TransactionEntity
 }

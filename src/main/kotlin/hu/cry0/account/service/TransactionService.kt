@@ -18,8 +18,8 @@ class TransactionService(
         return result.mapNotNull { modelMapper.map(it, Transaction::class.java) }
     }
 
-    fun getById(transactionId: UUID): Transaction =
-        modelMapper.map(transactionRepository.getReferenceById(transactionId), Transaction::class.java)
+    fun getById(transactionId: UUID, accountNumber: Long): Transaction =
+        modelMapper.map(transactionRepository.findByIdAndAccountNumber(transactionId, accountNumber), Transaction::class.java)
 
     fun deleteById(transactionId: UUID) = transactionRepository.deleteById(transactionId)
 
@@ -34,9 +34,8 @@ class TransactionService(
         return modelMapper.map(saveResult, Transaction::class.java)
     }
 
-    fun updateTransaction(transactionId: UUID, transaction: Transaction): Transaction {
-        val existingTransaction =
-            modelMapper.map(transactionRepository.getReferenceById(transactionId), Transaction::class.java)
+    fun updateTransaction(transactionId: UUID, accountNumber: Long,  transaction: Transaction): Transaction {
+        val existingTransaction = getById(transactionId, accountNumber)
         existingTransaction.merge(transaction)
 
         val savedEntity =
