@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
+import java.time.Instant
 
 plugins {
 	id("org.springframework.boot") version "3.2.4"
@@ -23,6 +25,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.liquibase:liquibase-core")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -40,6 +44,11 @@ tasks.withType<KotlinCompile> {
 		freeCompilerArgs += "-Xjsr305=strict"
 		jvmTarget = "21"
 	}
+}
+
+tasks.named<BootBuildImage>("bootBuildImage") {
+	createdDate = Instant.now().toString()
+	imageName = "cry0/account"
 }
 
 tasks.withType<Test> {
