@@ -10,7 +10,7 @@ class AccountNumberGenerator : IdentifierGenerator {
 
     companion object {
         private const val ACCOUNT_NUMBER_PROPERTY = "accountNumber"
-        private const val ACCOUNT_NUMBER_COUNT_QUERY = "SELECT COUNT(*) FROM AccountEntity WHERE accountNumber = :accountNumber"
+        private const val ACCOUNT_NUMBER_COUNT_QUERY = "SELECT COUNT(*) FROM account WHERE account_number = :accountNumber"
     }
 
     override fun generate(session: SharedSessionContractImplementor?, `object`: Any?): Any {
