@@ -1,5 +1,7 @@
 package hu.cry0.account.controller
 
+import hu.cry0.account.controller.dto.NewTransactionRequest
+import hu.cry0.account.controller.dto.TransactionModifyRequest
 import hu.cry0.account.controller.error.ApiError
 import hu.cry0.account.model.Transaction
 import hu.cry0.account.model.validator.AccountActive
@@ -11,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
+import org.modelmapper.ModelMapper
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -29,7 +32,10 @@ import java.util.UUID
 
 @RestController
 @RequestMapping(value = ["/api/v1/account/{accountNumber}/transaction"])
-class TransactionController(private val transactionService: TransactionService) {
+class TransactionController(
+    private val transactionService: TransactionService,
+    private val modelMapper: ModelMapper,
+) {
 
     @Operation(
         summary = "Get all transactions.",
@@ -154,13 +160,18 @@ class TransactionController(private val transactionService: TransactionService) 
             )]
         )]
     )
-    @PostMapping(path = ["/"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(
+        path = ["/"],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
     @Validated
     fun addTransaction(
         @PathVariable @AccountActive accountNumber: String,
-        @RequestBody transaction: Transaction,
+        @RequestBody transaction: NewTransactionRequest,
     ): ResponseEntity<Transaction> {
-        val saveResult = transactionService.addTransaction(accountNumber, transaction)
+        val saveResult =
+            transactionService.addTransaction(accountNumber, modelMapper.map(transaction, Transaction::class.java))
 
         val location: URI =
             ServletUriComponentsBuilder.fromCurrentRequest().path("/{transactionId}").buildAndExpand(saveResult.id)
@@ -205,9 +216,13 @@ class TransactionController(private val transactionService: TransactionService) 
     fun updateTransaction(
         @PathVariable @AccountActive accountNumber: String,
         @PathVariable transactionId: UUID,
-        @RequestBody @Valid transaction: Transaction,
+        @RequestBody @Valid transaction: TransactionModifyRequest,
     ): ResponseEntity<Transaction> {
-        val updateResult = transactionService.updateTransaction(transactionId, accountNumber, transaction)
+        val updateResult = transactionService.updateTransaction(
+            transactionId,
+            accountNumber,
+            modelMapper.map(transaction, Transaction::class.java)
+        )
 
         return ResponseEntity.ok(updateResult)
     }

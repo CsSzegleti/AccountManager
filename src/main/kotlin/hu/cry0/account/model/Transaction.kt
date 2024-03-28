@@ -23,7 +23,6 @@ open class Transaction(
     var account: Account? = null,
 ) {
     fun merge(other: Transaction) {
-        accountNumber = other.accountNumber
         type = other.type
         amount = other.amount
     }

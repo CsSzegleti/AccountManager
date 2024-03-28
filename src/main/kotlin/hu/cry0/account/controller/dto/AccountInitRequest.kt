@@ -1,4 +1,4 @@
-package hu.cry0.account.model
+package hu.cry0.account.controller.dto
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull

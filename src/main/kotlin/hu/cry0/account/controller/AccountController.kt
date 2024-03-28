@@ -3,8 +3,8 @@ package hu.cry0.account.controller
 import hu.cry0.account.client.security.model.SecurityCheckOutputDto
 import hu.cry0.account.controller.error.ApiError
 import hu.cry0.account.model.Account
-import hu.cry0.account.model.AccountInitRequest
-import hu.cry0.account.model.BalanceResponse
+import hu.cry0.account.controller.dto.AccountInitRequest
+import hu.cry0.account.controller.dto.BalanceResponse
 import hu.cry0.account.model.validator.AccountActive
 import hu.cry0.account.service.AccountService
 import io.swagger.v3.oas.annotations.Operation

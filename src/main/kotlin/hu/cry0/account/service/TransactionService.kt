@@ -6,7 +6,6 @@ import hu.cry0.account.persistence.repository.TransactionRepository
 import hu.cry0.account.service.exception.NotFoundException
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
-import java.time.Instant
 import java.util.*
 
 @Service
@@ -36,11 +35,7 @@ class TransactionService(
     fun addTransaction(accountNumber: String, transaction: Transaction): Transaction {
 
         transaction.apply {
-            id = null
             this.accountNumber = accountNumber
-            transaction.timeStamp?.let {
-                this.timeStamp = Instant.now()
-            }
         }
 
         val saveResult = transactionRepository.save(modelMapper.map(transaction, TransactionEntity::class.java))
