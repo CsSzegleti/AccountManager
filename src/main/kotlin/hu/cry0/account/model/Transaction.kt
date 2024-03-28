@@ -9,7 +9,7 @@ import java.util.*
 open class Transaction(
     var id: UUID? = null,
 
-    @field:AccountActive
+    @JsonIgnore
     var accountNumber: String? = null,
 
     var type: TransactionType? = null,
