@@ -52,7 +52,7 @@ class TransactionController(private val transactionService: TransactionService) 
             )]
         )]
     )
-    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(path = ["/"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Validated
     fun getAllByAccountNumber(
         @PathVariable @AccountActive accountNumber: String
@@ -119,7 +119,7 @@ class TransactionController(private val transactionService: TransactionService) 
     @DeleteMapping(path = ["/{transactionId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Validated
     fun deleteById(
-        @PathVariable @AccountActive accountNumber: Long,
+        @PathVariable @AccountActive accountNumber: String,
         @PathVariable transactionId: UUID,
     ): ResponseEntity<*> {
         transactionService.deleteById(transactionId)
@@ -153,10 +153,10 @@ class TransactionController(private val transactionService: TransactionService) 
             )]
         )]
     )
-    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(path = ["/"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Validated
     fun addTransaction(
-        @PathVariable @AccountActive accountNumber: Long,
+        @PathVariable @AccountActive accountNumber: String,
         @RequestBody transaction: Transaction,
     ): ResponseEntity<Transaction> {
         val saveResult = transactionService.addTransaction(transaction)
