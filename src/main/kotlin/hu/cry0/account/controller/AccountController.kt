@@ -53,7 +53,7 @@ class AccountController(private val accountService: AccountService) {
             )]
         )]
     )
-    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(path = ["/"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getAll(): ResponseEntity<List<Account>> = ResponseEntity.ok(accountService.getAll())
 
 
