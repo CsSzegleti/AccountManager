@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 class ApiError {
     @Schema(description = "url")
-    private val path: String? = null
+    var path: String? = null
 
     @Schema(description = "error message", example = "error.business")
-    private val message: String? = null
+    var message: String? = null
 }
