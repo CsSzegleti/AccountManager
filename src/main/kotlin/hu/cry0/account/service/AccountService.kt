@@ -8,6 +8,7 @@ import hu.cry0.account.model.Account
 import hu.cry0.account.model.AccountStatus
 import hu.cry0.account.persistence.entity.AccountEntity
 import hu.cry0.account.persistence.repository.AccountRepository
+import hu.cry0.account.service.exception.NotFoundException
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 
@@ -25,9 +26,13 @@ class AccountService(
     }
 
     fun getAccountByNumber(accountNumber: String): Account {
-        val result = accountRepository.getReferenceById(accountNumber)
+        try {
+            val result = accountRepository.getReferenceById(accountNumber)
+            return modelMapper.map(result, Account::class.java)
 
-        return modelMapper.map(result, Account::class.java)
+        } catch (ex: Exception) {
+            throw NotFoundException(ex.message, ex)
+        }
     }
 
     fun deleteAccountByNumber(accountNumber: String) = accountRepository.deleteById(accountNumber)

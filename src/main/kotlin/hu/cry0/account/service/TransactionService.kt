@@ -3,6 +3,7 @@ package hu.cry0.account.service
 import hu.cry0.account.model.Transaction
 import hu.cry0.account.persistence.entity.TransactionEntity
 import hu.cry0.account.persistence.repository.TransactionRepository
+import hu.cry0.account.service.exception.NotFoundException
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
 import java.util.*
@@ -18,8 +19,16 @@ class TransactionService(
         return result.mapNotNull { modelMapper.map(it, Transaction::class.java) }
     }
 
-    fun getById(transactionId: UUID, accountNumber: String): Transaction =
-        modelMapper.map(transactionRepository.findByIdAndAccountNumber(transactionId, accountNumber), Transaction::class.java)
+    fun getById(transactionId: UUID, accountNumber: String): Transaction {
+        val entity: TransactionEntity
+        try {
+            entity = transactionRepository.findByIdAndAccountNumber(transactionId, accountNumber)
+
+        } catch (ex: Exception) {
+            throw NotFoundException(ex.message)
+        }
+        return modelMapper.map(entity, Transaction::class.java)
+    }
 
     fun deleteById(transactionId: UUID) = transactionRepository.deleteById(transactionId)
 
@@ -34,7 +43,7 @@ class TransactionService(
         return modelMapper.map(saveResult, Transaction::class.java)
     }
 
-    fun updateTransaction(transactionId: UUID, accountNumber: String,  transaction: Transaction): Transaction {
+    fun updateTransaction(transactionId: UUID, accountNumber: String, transaction: Transaction): Transaction {
         val existingTransaction = getById(transactionId, accountNumber)
         existingTransaction.merge(transaction)
 
