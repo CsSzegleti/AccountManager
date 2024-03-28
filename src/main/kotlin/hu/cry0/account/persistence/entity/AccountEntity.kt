@@ -14,7 +14,7 @@ import org.hibernate.annotations.SQLRestriction
 
 @Entity
 @Table(name = "account")
-@SQLDelete(sql = "update account SET status = 'DELETED' WHERE id = ? AND status <> 'DELETED'", check = ResultCheckStyle.COUNT)
+@SQLDelete(sql = "update account SET status = 'DELETED' WHERE account_number = ? AND status <> 'DELETED'", check = ResultCheckStyle.COUNT)
 @SQLRestriction("status <> 'DELETED'")
 class AccountEntity {
 
@@ -27,7 +27,7 @@ class AccountEntity {
     @Column(name = "account_holder_name")
     var accountHolderName: String? = null
 
-    @OneToMany(mappedBy = "account", cascade = [CascadeType.DETACH])
+    @OneToMany(mappedBy = "account", cascade = [CascadeType.REMOVE])
     var transactions: List<TransactionEntity> = listOf()
 
     @Column(name = "status")

@@ -17,8 +17,7 @@
             <column name="account_holder_name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="status" type="varchar(7)" defaultValue="ACTIVE"/>
-            <column name="balance" type="bigint" defaultValue="0"/>
+            <column name="status" type="varchar(10)" defaultValue="ACTIVE"/>
         </createTable>
 
         <createTable tableName="transaction">
@@ -37,6 +36,7 @@
             <column name="amount" type="bigint">
                 <constraints nullable="false"/>
             </column>
+            <column name="status" type="varchar(10)" defaultValue="ACTIVE"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="account_number"

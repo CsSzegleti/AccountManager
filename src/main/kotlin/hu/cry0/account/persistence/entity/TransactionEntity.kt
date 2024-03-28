@@ -1,11 +1,16 @@
 package hu.cry0.account.persistence.entity
 
 import jakarta.persistence.*
+import org.hibernate.annotations.ResultCheckStyle
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.SQLRestriction
 import java.time.Instant
 import java.util.UUID
 
 @Entity
 @Table(name = "transaction")
+@SQLDelete(sql = "update transaction SET status = 'DELETED' WHERE id = ? AND status <> 'DELETED'", check = ResultCheckStyle.COUNT)
+@SQLRestriction("status <> 'DELETED'")
 class TransactionEntity {
 
     @Id
