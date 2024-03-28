@@ -23,7 +23,7 @@ On Linux or Mac:
 On Windows:
 
 ```ps
-./gradlew.bat bootRun
+.\gradlew.bat bootRun
 ```
 
 You can find the openAPI documentation at http://localhost:8080/swagger-ui/index.html
