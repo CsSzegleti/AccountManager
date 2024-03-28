@@ -18,11 +18,11 @@ class TransactionEntity {
     @Column(name = "id")
     var id: UUID? = null
 
-    @Column(name = "account_number", updatable = false, insertable = false)
+    @Column(name = "account_number")
     var accountNumber: String? = null
 
     @ManyToOne
-    @JoinColumn(name = "account_number")
+    @JoinColumn(name = "account_number", updatable = false, insertable = false)
     var account: AccountEntity? = null
 
     @Column(name = "transaction_type")
@@ -32,5 +32,5 @@ class TransactionEntity {
     var amount: Long? = null
 
     @Column(name = "time_stamp", updatable = false)
-    val timeStamp: Instant? = null
+    var timeStamp: Instant = Instant.now()
 }

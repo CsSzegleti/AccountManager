@@ -1,9 +1,12 @@
 package hu.cry0.account.model
 
 import com.fasterxml.jackson.annotation.JsonBackReference
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
 import hu.cry0.account.model.validator.AccountActive
+import java.time.DateTimeException
 import java.time.Instant
+import java.time.InstantSource
 import java.util.*
 
 data class Transaction(
@@ -16,7 +19,7 @@ data class Transaction(
 
     var amount: Long? = null,
 
-    var timeStamp: Instant? = null,
+    var timeStamp: Instant = Instant.now(),
 
     @JsonBackReference
     @JsonIgnore
