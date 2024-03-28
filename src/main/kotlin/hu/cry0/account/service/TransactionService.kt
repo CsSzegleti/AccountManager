@@ -6,6 +6,7 @@ import hu.cry0.account.persistence.repository.TransactionRepository
 import hu.cry0.account.service.exception.NotFoundException
 import org.modelmapper.ModelMapper
 import org.springframework.stereotype.Service
+import java.time.Instant
 import java.util.*
 
 @Service
@@ -25,17 +26,21 @@ class TransactionService(
             entity = transactionRepository.findByIdAndAccountNumber(transactionId, accountNumber)
 
         } catch (ex: Exception) {
-            throw NotFoundException(ex.message)
+            throw NotFoundException("Unable to find ${Transaction::class.simpleName} with id $transactionId")
         }
         return modelMapper.map(entity, Transaction::class.java)
     }
 
     fun deleteById(transactionId: UUID) = transactionRepository.deleteById(transactionId)
 
-    fun addTransaction(transaction: Transaction): Transaction {
+    fun addTransaction(accountNumber: String, transaction: Transaction): Transaction {
 
         transaction.apply {
             id = null
+            this.accountNumber = accountNumber
+            transaction.timeStamp?.let {
+                this.timeStamp = Instant.now()
+            }
         }
 
         val saveResult = transactionRepository.save(modelMapper.map(transaction, TransactionEntity::class.java))

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
-data class Account(
+open class Account(
     var accountNumber: String? = null,
 
     @NotNull

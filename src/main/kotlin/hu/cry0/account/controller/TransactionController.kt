@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -159,7 +160,7 @@ class TransactionController(private val transactionService: TransactionService) 
         @PathVariable @AccountActive accountNumber: String,
         @RequestBody transaction: Transaction,
     ): ResponseEntity<Transaction> {
-        val saveResult = transactionService.addTransaction(transaction)
+        val saveResult = transactionService.addTransaction(accountNumber, transaction)
 
         val location: URI =
             ServletUriComponentsBuilder.fromCurrentRequest().path("/{transactionId}").buildAndExpand(saveResult.id)
@@ -204,7 +205,7 @@ class TransactionController(private val transactionService: TransactionService) 
     fun updateTransaction(
         @PathVariable @AccountActive accountNumber: String,
         @PathVariable transactionId: UUID,
-        @RequestBody transaction: Transaction,
+        @RequestBody @Valid transaction: Transaction,
     ): ResponseEntity<Transaction> {
         val updateResult = transactionService.updateTransaction(transactionId, accountNumber, transaction)
 

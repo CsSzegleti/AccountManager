@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -215,6 +216,7 @@ class AccountController(private val accountService: AccountService) {
         )]
     )
     @PostMapping(path = ["/finalize"])
-    fun finalizeAccount(@RequestBody securityCheckOutputDto: SecurityCheckOutputDto) =
+    @Validated
+    fun finalizeAccount(@Valid @RequestBody securityCheckOutputDto: SecurityCheckOutputDto) =
         accountService.finalizeAccountRegistration(securityCheckOutputDto)
 }

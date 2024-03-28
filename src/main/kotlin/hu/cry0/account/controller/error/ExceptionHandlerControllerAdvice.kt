@@ -19,10 +19,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 class ExceptionHandlerControllerAdvice {
 
     @ExceptionHandler(value = [BindException::class, MethodArgumentTypeMismatchException::class, MethodArgumentNotValidException::class])
-    fun handleValidationException(ex: Exception): ResponseEntity<ApiError> {
+    fun handleValidationException(ex: MethodArgumentNotValidException): ResponseEntity<ApiError> {
         val apiError = ApiError().apply {
             path = ServletUriComponentsBuilder.fromCurrentRequest().toUriString()
-            message = ex.message
+            message = ex.localizedMessage
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError)
