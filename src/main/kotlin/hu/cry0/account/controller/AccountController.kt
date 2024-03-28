@@ -196,7 +196,7 @@ class AccountController(private val accountService: AccountService) {
     )
     @ApiResponses(
         value = [ApiResponse(
-            description = "Successful operation", responseCode = "201"
+            description = "Successful operation", responseCode = "200"
         ), ApiResponse(
             description = "Bad request", responseCode = "400", content = [Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
