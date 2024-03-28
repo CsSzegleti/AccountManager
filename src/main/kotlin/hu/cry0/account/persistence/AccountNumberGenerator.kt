@@ -1,7 +1,6 @@
 package hu.cry0.account.persistence
 
 import hu.cry0.account.ApplicationContextProvider
-import hu.cry0.account.persistence.entity.AccountEntity
 import hu.cry0.account.persistence.exception.BankPrefixNotSetException
 import hu.cry0.account.persistence.exception.NoActiveSessionException
 import org.hibernate.engine.spi.SharedSessionContractImplementor
@@ -11,6 +10,7 @@ class AccountNumberGenerator : IdentifierGenerator {
 
     companion object {
         private const val ACCOUNT_NUMBER_PROPERTY = "accountNumber"
+        private const val ACCOUNT_NUMBER_COUNT_QUERY = "SELECT COUNT(*) FROM AccountEntity WHERE accountNumber = :accountNumber"
     }
 
     override fun generate(session: SharedSessionContractImplementor?, `object`: Any?): Any {
@@ -38,13 +38,11 @@ class AccountNumberGenerator : IdentifierGenerator {
     }
 
     private fun isAccountNumberUnique(session: SharedSessionContractImplementor, accountNumber: String): Boolean {
-        val criteriaBuilder = session.criteriaBuilder
-        val criteriaQuery = criteriaBuilder.createQuery(Long::class.java)
-        val root = criteriaQuery.from(AccountEntity::class.java)
+        val query = session.createNativeQuery(ACCOUNT_NUMBER_COUNT_QUERY) // have to use native query, because of the soft delete
+        query.setParameter(ACCOUNT_NUMBER_PROPERTY, accountNumber)
 
-        criteriaQuery.select(criteriaBuilder.count(root)).where(criteriaBuilder.equal(root?.get<String>(ACCOUNT_NUMBER_PROPERTY), accountNumber))
-        val query = session.createQuery(criteriaQuery)
+        val result = query.singleResult as Long
 
-        return query.singleResult > 0
+        return result > 0L
     }
 }
