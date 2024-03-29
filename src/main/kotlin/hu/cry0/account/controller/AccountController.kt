@@ -5,7 +5,8 @@ import hu.cry0.account.controller.error.ApiError
 import hu.cry0.account.model.Account
 import hu.cry0.account.controller.dto.AccountInitRequest
 import hu.cry0.account.controller.dto.BalanceResponse
-import hu.cry0.account.model.validator.AccountActive
+import hu.cry0.account.model.AccountStatus
+import hu.cry0.account.model.validator.AllowedStatus
 import hu.cry0.account.service.AccountService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -119,8 +120,10 @@ class AccountController(private val accountService: AccountService) {
     )
     @GetMapping(path = ["/{accountNumber}/balance"])
     @Validated
-    fun getAccountBalance(@AccountActive @PathVariable accountNumber: String) =
-        ResponseEntity.ok(BalanceResponse(accountService.getBalance(accountNumber)))
+    fun getAccountBalance(
+        @AllowedStatus(status = [AccountStatus.ACTIVE], message = "error.state.not.active")
+        @PathVariable accountNumber: String,
+    ) = ResponseEntity.ok(BalanceResponse(accountService.getBalance(accountNumber)))
 
 
     @Operation(
@@ -149,7 +152,10 @@ class AccountController(private val accountService: AccountService) {
     )
     @DeleteMapping(path = ["/{accountNumber}"])
     @Validated
-    fun deleteAccount(@AccountActive @PathVariable accountNumber: String): ResponseEntity<*> {
+    fun deleteAccount(
+        @AllowedStatus(status = [AccountStatus.ACTIVE], message = "error.state.not.active")
+        @PathVariable accountNumber: String,
+    ): ResponseEntity<*> {
         accountService.deleteAccountByNumber(accountNumber)
         return ResponseEntity.status(204).build<HttpStatus>()
     }

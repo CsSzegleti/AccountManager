@@ -3,8 +3,9 @@ package hu.cry0.account.controller
 import hu.cry0.account.controller.dto.NewTransactionRequest
 import hu.cry0.account.controller.dto.TransactionModifyRequest
 import hu.cry0.account.controller.error.ApiError
+import hu.cry0.account.model.AccountStatus
 import hu.cry0.account.model.Transaction
-import hu.cry0.account.model.validator.AccountActive
+import hu.cry0.account.model.validator.AllowedStatus
 import hu.cry0.account.service.TransactionService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.ArraySchema
@@ -62,7 +63,10 @@ class TransactionController(
     @GetMapping(path = ["/"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Validated
     fun getAllByAccountNumber(
-        @PathVariable @AccountActive accountNumber: String
+        @PathVariable @AllowedStatus(
+            status = [AccountStatus.ACTIVE],
+            message = "error.state.not.active"
+        ) accountNumber: String
     ) = ResponseEntity.ok(transactionService.getAllByAccountNumber(accountNumber))
 
     @Operation(
@@ -95,7 +99,10 @@ class TransactionController(
     @GetMapping(path = ["/{transactionId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Validated
     fun getById(
-        @PathVariable @AccountActive accountNumber: String,
+        @PathVariable @AllowedStatus(
+            status = [AccountStatus.ACTIVE],
+            message = "error.state.not.active"
+        ) accountNumber: String,
         @PathVariable transactionId: UUID,
     ) = ResponseEntity.ok(transactionService.getById(transactionId, accountNumber))
 
@@ -126,7 +133,10 @@ class TransactionController(
     @DeleteMapping(path = ["/{transactionId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Validated
     fun deleteById(
-        @PathVariable @AccountActive accountNumber: String,
+        @PathVariable @AllowedStatus(
+            status = [AccountStatus.ACTIVE],
+            message = "error.state.not.active"
+        ) accountNumber: String,
         @PathVariable transactionId: UUID,
     ): ResponseEntity<*> {
         transactionService.deleteById(transactionId)
@@ -167,11 +177,14 @@ class TransactionController(
     )
     @Validated
     fun addTransaction(
-        @PathVariable @AccountActive accountNumber: String,
+        @PathVariable
+        @AllowedStatus(status = [AccountStatus.ACTIVE], message = "error.state.not.active")
+        accountNumber: String,
         @RequestBody transaction: NewTransactionRequest,
     ): ResponseEntity<Transaction> {
-        val saveResult =
-            transactionService.addTransaction(accountNumber, modelMapper.map(transaction, Transaction::class.java))
+        val saveResult = transactionService.addTransaction(
+            accountNumber, modelMapper.map(transaction, Transaction::class.java)
+        )
 
         val location: URI =
             ServletUriComponentsBuilder.fromCurrentRequest().path("/{transactionId}").buildAndExpand(saveResult.id)
@@ -214,14 +227,12 @@ class TransactionController(
     )
     @Validated
     fun updateTransaction(
-        @PathVariable @AccountActive accountNumber: String,
+        @PathVariable @AllowedStatus(status = [AccountStatus.ACTIVE], message = "error.state.not.active") accountNumber: String,
         @PathVariable transactionId: UUID,
         @RequestBody @Valid transaction: TransactionModifyRequest,
     ): ResponseEntity<Transaction> {
         val updateResult = transactionService.updateTransaction(
-            transactionId,
-            accountNumber,
-            modelMapper.map(transaction, Transaction::class.java)
+            transactionId, accountNumber, modelMapper.map(transaction, Transaction::class.java)
         )
 
         return ResponseEntity.ok(updateResult)

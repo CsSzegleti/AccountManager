@@ -2,7 +2,6 @@ package hu.cry0.account.model
 
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonIgnore
-import hu.cry0.account.model.validator.AccountActive
 import java.time.Instant
 import java.util.*
 
