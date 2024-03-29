@@ -12,25 +12,57 @@ import org.springframework.validation.BindException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.method.annotation.HandlerMethodValidationException
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 @ControllerAdvice(assignableTypes = [AccountController::class, TransactionController::class])
 class ExceptionHandlerControllerAdvice {
 
-    @ExceptionHandler(value = [BindException::class, MethodArgumentTypeMismatchException::class, MethodArgumentNotValidException::class])
-    fun handleValidationException(ex: MethodArgumentNotValidException): ResponseEntity<ApiError> {
+    @ExceptionHandler(
+        value = [HandlerMethodValidationException::class]
+    )
+    fun handleValidationException(ex: HandlerMethodValidationException): ResponseEntity<ApiError> {
         val apiError = ApiError().apply {
             path = ServletUriComponentsBuilder.fromCurrentRequest().toUriString()
-            message = ex.localizedMessage
+            message = ex.allValidationResults.firstOrNull()?.resolvableErrors?.firstOrNull()?.defaultMessage
+
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError)
     }
 
+    @ExceptionHandler(
+        value = [
+            BindException::class,
+            MethodArgumentNotValidException::class,
+        ]
+    )
+    fun handleBindException(ex: BindException): ResponseEntity<ApiError> {
+        val apiError = ApiError().apply {
+            path = ServletUriComponentsBuilder.fromCurrentRequest().toUriString()
+            message = ex.bindingResult.toString()
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError)
+    }
+
+    @ExceptionHandler(
+        value = [
+            MethodArgumentTypeMismatchException::class,
+        ]
+    )
+    fun handleMethodArgumentTypeMismatchException(ex: MethodArgumentTypeMismatchException): ResponseEntity<ApiError> {
+        val apiError = ApiError().apply {
+            path = ServletUriComponentsBuilder.fromCurrentRequest().toUriString()
+            message = ex.message
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError)
+    }
 
     @ExceptionHandler(value = [BankPrefixNotSetException::class, NoActiveSessionException::class])
-    fun handleBandPrefixNotSetException(ex: BankPrefixNotSetException): ResponseEntity<ApiError> {
+    fun handleBandPrefixNotSetException(ex: Exception): ResponseEntity<ApiError> {
         val apiError = ApiError().apply {
             path = ServletUriComponentsBuilder.fromCurrentRequest().toUriString()
             message = ex.message
