@@ -1,6 +1,7 @@
 # Take-home assignment
 ## Prerequisites
 In order to run the service, you need to have the following:
+- JDK 21
 - Docker installed
 - Docker compose installed
 - Dependencies up and running
